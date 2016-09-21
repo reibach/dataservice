@@ -1,0 +1,270 @@
+
+/*  Formatierung body Bildlaufleiste + Hintergrundgrafik*/
+
+body {
+margin: 0px;
+padding: 20px;
+font-family: Verdana,Arial,Helvetica,sans-serif;
+font-size: 14px;
+font-weight: normal;
+color: #000000;
+background-color:#cccccc;
+# background: url(css-bg02.gif) #F0F4FF top right fixed repeat;
+}
+
+
+div {
+margin: 18px;
+padding: 0px;
+font-family: Verdana,Arial,Helvetica,sans-serif;
+font-size: 14px;
+font-weight: normal;
+color: #000000;
+background-color:#c0c0c0;
+}
+
+progress {
+/*
+  background-color: #f3f3f3;
+*/
+/*
+  border: 10;
+*/
+  height: 18px;
+  width: 400px;
+/*
+  border-radius: 9px;
+*/
+}
+
+
+#Alles {
+width: 900px;
+margin: 0px 0px 0px 40px;
+padding: 0px;
+background-color: #FFFFFF;
+border: 1px solid #9F9F9F;
+line-height: 130%;
+}
+
+#content {
+position: relative;
+top: 0px;
+left: 30px;
+width: 840px;
+margin: 0px 0px 0px 0px;
+padding: 0px;
+background-color: #FFFFFF;
+line-height: 130%;
+}
+
+/* horizontales menü */
+
+#Menue23 ul {
+margin: 0px;
+padding: 0px;
+}
+
+#Menue23 li {
+display: inline;
+float: left;
+margin: 0px;
+padding: 0px;
+list-style: none;
+}
+
+#Menue23 li a, #Menue23 li a:visited {
+display: block;
+background-color: #7F7F7F;
+margin: 0px 1px 1px 0px;
+padding: 5px 0px 5px 8px;
+width: 100px;
+font-family: Verdana,sans-serif;
+font-size: 11px;
+color: #FFFFFF;
+font-weight: bold;
+text-align: left;
+text-decoration: none;
+text-transform: none;
+}
+
+#Menue23 li a:hover {
+display: block;
+background-color: #000000;
+color: #FFFFFF;
+text-decoration: none;
+text-transform: none;
+}
+
+#content .navtop {
+border-top: 1px solid #78B9EC;
+margin: 0 0 15px 0;
+}
+
+
+#content .navtop
+{
+border-top: solid 0.1em #9F9F9F;
+margin: 0 0 15px 0;
+}
+
+/*  tabellenzellen */
+td {
+font-family: Verdana,Arial,Helvetica,sans-serif;
+font-size: 12px;
+font-weight: normal;
+text-decoration: none;
+color: #000000;
+line-height: 130%;
+}
+
+/*  Absätze Blockformatierung  */
+p {
+font-family:Verdana,Arial,Helvetica,sans-serif;
+font-size: 14px;
+font-weight:normal;
+text-decoration:none;
+color: #000000;
+text-align: justify;
+line-height:130%;
+}
+
+
+/*  Links allgemein */
+a, a:visited {
+font-family: Verdana,Arial,Helvetica,sans-serif;
+font-size: 14px;
+font-weight: normal;
+text-decoration: none;
+color: #0070C0;
+}
+
+a:hover {
+color: #FF5F00;
+}
+
+
+a.weiss {
+color: #FFFFFF;
+}
+a.weiss:visited {
+color: #FFFFFF;
+}
+
+
+/*  eigene klasse links */
+
+a.linkmini {
+font-family: Arial,Helvetica,sans-serif;
+font-size: 10px;
+font-weight: normal;
+text-decoration: none;
+color: #0050A0;
+}
+
+/*  elemente mit Rand */
+.rand {
+border: 1px solid #BFBFBF;
+}
+
+
+/*  aufzählungen */
+ul {
+font-family: Verdana,Arial,Helvetica,sans-serif;
+font-size: 12px;
+text-decoration: none;
+color: #000000;
+}
+
+li {
+font-family: Verdana,Arial,Helvetica,sans-serif;
+font-size: 12px;
+font-weight: normal;
+color: #003080;
+}
+
+/*  preformatierter Text */
+pre {
+font-family: monospace;
+color: #000000;
+font-size:18px;
+}
+
+
+/*  eigene klasse für überschriften - zT nicht mehr in Fettschrift*/
+
+h1 {
+font-family: Verdana,Arial,Helvetica,sans-serif;
+font-size: 24px;
+font-weight: normal;
+text-decoration: none;
+color: #2F2F2F;
+}
+h2 {
+font-family: Verdana,Arial,Helvetica,sans-serif;
+font-size: 16px;
+font-weight: normal;
+color: #7F7F7F;
+}
+h3 {
+font-family: Verdana,Arial,Helvetica,sans-serif;
+font-size: 16px;
+font-weight: normal;
+text-decoration: none;
+color: #FF007F;
+text-transform: uppercase;
+}
+h4 {
+font-family: Verdana,Arial,Helvetica,sans-serif;
+font-size: 14px;
+font-weight: normal;
+color: #0000DF;
+text-transform: uppercase;
+}
+h5 {
+font-family: Verdana,Arial,Helvetica,sans-serif;
+font-size: 12px;
+font-weight: bold;
+color: #000000;
+text-transform: uppercase;
+}
+
+
+/*  eigene klassen für hintergrundfarbe */
+.bgcolor1 {background-color : #C00040;}
+.bgcolor1 {background-color : #D01050;}
+
+
+/*  eigene klasse für textfarbe */
+.rot {color: #FF0099;}
+.violett {color: #9000E0;}
+.weiss {color: #FFFFFF;}
+.blau {color: #0000FF;}
+
+
+
+/*  eigene klasse für überschriften */
+.titel {
+font-family: Verdana,Arial,Helvetica,sans-serif;
+font-size: 14px;
+font-weight: normal;
+color: #2C6ED5;
+text-transform: uppercase;
+}
+
+
+/*  eigene klassen für kleine schriften */
+
+.smallgrau {
+font-family: Arial,Helvetica,sans-serif;
+font-size: 10px;
+color: #8F8F8F;
+}
+
+.mini {
+font-family: Arial,Helvetica,sans-serif;
+font-size: 10px;
+font-weight: normal;
+text-decoration: none;
+color: #000000;
+}
