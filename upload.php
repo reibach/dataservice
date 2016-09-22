@@ -3,10 +3,10 @@ header("Content-Type: text/json");
 session_start(); 
 include 'config.php';    
 
-
-    
-
 ##### Start Funktionsaufrufe ###########################################
+//Funktionsaufruf - Directory immer mit endendem / angeben
+deleteFilesFromDirectory($tmpDir);
+
 //Datei(en) hochladen
 uploadFiles($upload_folder,$filenames);
 
@@ -21,7 +21,7 @@ moveFile($zipfile, 'download/'.$zipfile);
 deleteFilesFromDirectory($upload_folder);
 
 // EMail erstellen
-generateEmail($downloadlink,$downloadlinkhtml);
+generateEmail($downloadlink,$downloadlinkhtml,$from);
 
 ### TESTFunktionen ###
 // CheckDebug
@@ -38,10 +38,31 @@ generateEmail($downloadlink,$downloadlinkhtml);
 
 
 ##### Start Funktionsdefinitionen ######################################
-//Datei(en) hochladen 
+// tmp vorab loeschen
+function deleteFilesFromDirectory($ordnername){
+	//überprüfen ob das Verzeichnis überhaupt existiert
+	if (is_dir($ordnername)) {
+		//Ordner öffnen zur weiteren Bearbeitung
+		if ($dh = opendir($ordnername)) {
+			//Schleife, bis alle Files im Verzeichnis ausgelesen wurden
+			while (($file = readdir($dh)) !== false) {
+				//Oft werden auch die Standardordner . und .. ausgelesen, diese sollen ignoriert werden
+				if ($file!="." AND $file !="..") {
+					//Files vom Server entfernen
+					unlink("".$ordnername."".$file."");
+				}
+			}
+			//geöffnetes Verzeichnis wieder schließen
+			closedir($dh);
+		}
+	}
+}
+
+
+
+// Datei(en) hochladen 
 function uploadFiles($upload_folder,$filenames) {
 	global $error;
-
 	if (DEBUG == 1) {
 	
 		$msg = "<p></p>";
@@ -194,44 +215,23 @@ function saveFile($from, $to){
 function moveFile($from, $to){
 	global $error;
    //file_exists() - Existenz der Datei prüfen
-   if(!file_exists($to)){
-      //copy() - Datei kopieren
-      if (!copy($from, $to)) {
-		  $error = 1;
-          doMsg("failed to copy $file...<br>\n");
-      }
-      else{
-         //unlink() - Datei löschen
-         unlink($from);
-      }
-   }
+   if(!file_exists($to)) {
+		//copy() - Datei kopieren
+		if (!copy($from, $to)) {
+			$error = 1;
+			doMsg("failed to copy $file...<br>\n");
+		} else {
+			//unlink() - Datei löschen
+			unlink($from);
+		}
+	}
 }  
 
 
-// Alle Dateien innerhalb eines Verzeichnisses löschen
-function deleteFilesFromDirectory($ordnername){
-	global $error;
-	//überprüfen ob das Verzeichnis überhaupt existiert
-	if (is_dir($ordnername)) {
-		//Ordner öffnen zur weiteren Bearbeitung
-		if ($dh = opendir($ordnername)) {
-		//Schleife, bis alle Files im Verzeichnis ausgelesen wurden
-		while (($file = readdir($dh)) !== false) {
-		//Oft werden auch die Standardordner . und .. ausgelesen, diese sollen ignoriert werden
-			if ($file!="." AND $file !="..") {
-				//Files vom Server entfernen
-				unlink("".$ordnername."".$file."");
-			}
-		}
-		//geöffnetes Verzeichnis wieder schließen
-		closedir($dh);
-		}
-	}
-}
 
 
 //EMail zusammenbauen
-function generateEmail($downloadlink,$downloadlinkhtml) {
+function generateEmail($downloadlink,$downloadlinkhtml,$from) {
 	global $team;
 	global $error;
 	global $filenames;
@@ -252,30 +252,25 @@ function generateEmail($downloadlink,$downloadlinkhtml) {
 
 	$comments  = htmlspecialchars($_POST["comments"]);
 
-	// Ansprechpartner
+	// EMailAdresse des Ansprechpartners
 	$kontakt  = htmlspecialchars($_POST["kontakt"]);
 	
-	
-	
-	
-	//$email_address = $team['$kontakt'];
-	$myStr = "";
-	
-	foreach ($team as $key => $value) {
-		if ($value == $kontakt) {
-			$myStr = $key;	
-			break;
-		} else
-			$myStr = "Info";
-	}
+	$email_address = "";
 	
 
+	foreach ($team as $key => $value) {
+		if ($key == $kontakt) {
+			$email_address = $value;	
+			//break;
+		}
+	}
 
 	$msg = "<p>Folgende Daten wurden gesendet:</p>";
 	$msg .= "Name: ".$username;
 	$msg .= "<br />EMail: ".$useremail;
-	$msg .= "<br />TeamEmail: ".$kontakt;
-	$msg .= "<br />Ansprechpartner: ".$myStr;
+	$msg .= "<br />TeamEmail: ".$email_address;
+	$msg .= "<br />Ansprechpartner: ".$kontakt;
+	$msg .= "<br />from: ".$from;
 
 	$msg .= "<p>Nachricht: ".$comments."</p>";
 	$msg .= "<br />Folgende Dateien wurden hochgeladen und als Zip-Archiv zusammengepackt:";
@@ -289,8 +284,9 @@ function generateEmail($downloadlink,$downloadlinkhtml) {
 
 	$msgEmail = "Folgende Daten wurden gesendet:\r\n\r\n";
 	$msgEmail .= "Name: ".$username."\r\n";
+	$msgEmail .= "from: ".$from."\r\n";
 	$msgEmail .= "EMail: ".$useremail."\r\n";
-	$msgEmail .= "Ansprechpartner: ".$kontakt."\r\n";
+	$msgEmail .= "Ansprechpartner: ".$kontakt.$email_address."\r\n";
 	$msgEmail .= "Nachricht: ".$comments."\r\n\r\n";
 	$msgEmail .= "Folgende Dateien wurden hochgeladen und als Zip-Archiv zusammengepackt: \r\n";
 	$msgEmail .= $filenamesEmail."\r\n\r\n";
@@ -311,7 +307,7 @@ function generateEmail($downloadlink,$downloadlinkhtml) {
 	$subject = "Daten BZN";	
 	
 	// EMail senden
-	sendMail($email_address,$subject,$msgEmail);
+	sendMail($email_address,$subject,$msgEmail,$from);
 	
 	
 	// Antwort auf der Website ausgeben
@@ -322,7 +318,7 @@ function generateEmail($downloadlink,$downloadlinkhtml) {
 }	
 
 // EMail versenden
-function sendMail($to,$subject,$message) {
+function sendMail($to,$subject,$message,$from) {
 	global $error;
 	if (!isset($to))
 		$to = "testme@breitband-nds.de"; //Mailadresse Empfaenger

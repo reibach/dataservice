@@ -1,3 +1,4 @@
+
 <?php
 session_start();
 include 'config.php';    
@@ -44,7 +45,7 @@ include 'config.php';
 					<select id="kontakt" name="kontakt"> 
 					<?php
 					foreach ($team as $key => $value) {
-						echo '<option value="'.$value.'">'.$key.'</option>';
+						echo '<option value="'.$key.'">'.$key.'</option>';
 					}
 					?>
 					</select>	
@@ -96,46 +97,46 @@ include 'config.php';
                 }, 1000); //Zeitintervall auf 1s setzen
 					                            
 				$('#upload_form').ajaxSubmit({
-												dataType:'json',
-										
-												success:function(data) 
-												//success:function() 
-												{
-													$('#fortschritt').val('1');
-													$('#fortschritt_txt').html('100% hochgeladen. Besten Dank.');
-													clearInterval(intervalID);
-													//setTimeout(function(){ alert("Hello"); }, 3000);
-													
-													var data1 = $.param("DATA1" + data);
-													
-													//console.log("DATA1" + data1);
-													
-													var data2  = $('form').serialize();
-													//console.log("DATA2" + data2);
-													
-													var regex = /[?&]([^=#]+)=([^&#]*)/g,
-													url = data2,
-													params = {},
-													match;
-													while(match = regex.exec(url)) {
-														params[match[1]] = match[2];
-													}
-													
-													$("#placeholder").html(
-														 "<br />" + data	
-													
-													);
-													$('#upload_form')[0].reset();
-													
-												},  
-															
-                                                error:    function()
-                                                {
-                                                    $('#fortschritt').val('1');
-                                                    $('#fortschritt_txt').html('Ein Fehler ist aufgetreten, bitte versuchen Sie es noch einmal.');
-                                                    clearInterval(intervalID);
-                                                }
-                                            });
+					dataType:'json',
+			
+					success:function(data) 
+					//success:function() 
+					{
+						$('#fortschritt').val('1');
+						$('#fortschritt_txt').html('100% hochgeladen. Besten Dank.');
+						clearInterval(intervalID);
+						//setTimeout(function(){ alert("Hello"); }, 3000);
+						
+						var data1 = $.param("DATA1" + data);
+						
+						//console.log("DATA1" + data1);
+						
+						var data2  = $('form').serialize();
+						//console.log("DATA2" + data2);
+						
+						var regex = /[?&]([^=#]+)=([^&#]*)/g,
+						url = data2,
+						params = {},
+						match;
+						while(match = regex.exec(url)) {
+							params[match[1]] = match[2];
+						}
+						
+						$("#placeholder").html(
+							 "<br />" + data	
+						
+						);
+						$('#upload_form')[0].reset();
+						
+					},  
+								
+					error:    function()
+					{
+						$('#fortschritt').val('1');
+						$('#fortschritt_txt').html('Ein Fehler ist aufgetreten, bitte versuchen Sie es noch einmal.');
+						clearInterval(intervalID);
+					}
+				});
                 e.preventDefault(); //Event Abbrechen
 
             });
