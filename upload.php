@@ -268,9 +268,9 @@ function generateEmail($downloadlink,$downloadlinkhtml,$from) {
 	$msg = "<p>Folgende Daten wurden gesendet:</p>";
 	$msg .= "Name: ".$username;
 	$msg .= "<br />EMail: ".$useremail;
-	$msg .= "<br />TeamEmail: ".$email_address;
 	$msg .= "<br />Ansprechpartner: ".$kontakt;
-	$msg .= "<br />from: ".$from;
+	$msg .= "<br />EMailadresse des Ansprechpartners: ".$email_address;
+	//$msg .= "<br />from: ".$from;
 
 	$msg .= "<p>Nachricht: ".$comments."</p>";
 	$msg .= "<br />Folgende Dateien wurden hochgeladen und als Zip-Archiv zusammengepackt:";
@@ -284,9 +284,10 @@ function generateEmail($downloadlink,$downloadlinkhtml,$from) {
 
 	$msgEmail = "Folgende Daten wurden gesendet:\r\n\r\n";
 	$msgEmail .= "Name: ".$username."\r\n";
-	$msgEmail .= "from: ".$from."\r\n";
+	//$msgEmail .= "from: ".$from."\r\n";
 	$msgEmail .= "EMail: ".$useremail."\r\n";
-	$msgEmail .= "Ansprechpartner: ".$kontakt.$email_address."\r\n";
+	$msgEmail .= "Ansprechpartner: ".$kontakt."\r\n";
+	$msgEmail .= "EMailadresse des Ansprechpartners: ".$email_address."\r\n";
 	$msgEmail .= "Nachricht: ".$comments."\r\n\r\n";
 	$msgEmail .= "Folgende Dateien wurden hochgeladen und als Zip-Archiv zusammengepackt: \r\n";
 	$msgEmail .= $filenamesEmail."\r\n\r\n";
@@ -296,6 +297,38 @@ function generateEmail($downloadlink,$downloadlinkhtml,$from) {
 	$msgEmail .= $downloadlinkhtml;
 	$msgEmail .= "\r\n\r\n";
 	$msgEmail .= "Bitte beachten: Dieser Link ist nur begrenzte Zeit abrufbar\r\n";
+	
+	$msgEmail .= "\r\n\r\n";
+	$msgEmail .= "Breitband Kompetenz Zentrum Niedersachsen\r\n\r\n";
+
+	$msgEmail .= "Sachsenring 11\r\n"; 
+	$msgEmail .= "27711 Osterholz-Scharmbeck\r\n\r\n";
+
+	$msgEmail .= "T 04795 - 957 1150\r\n";
+	$msgEmail .= "F 04795 - 957 4048\r\n\r\n";
+
+	$msgEmail .= "info@breitband-niedersachsen.de\r\n";
+	$msgEmail .= "www.breitband-niedersachsen.de\r\n\r\n";
+	 
+
+	$msgEmail .= "------------------------------------------------------------------------\r\n\r\n";
+
+	$msgEmail .= "Diese E-Mail enthält vertrauliche und/oder rechtlich geschützte \r\n";
+	$msgEmail .= "Informationen. Wenn Sie nicht der richtige Adressat sind oder diese \r\n";
+	$msgEmail .= "E-Mail irrtümlich erhalten haben, informieren Sie bitte sofort den \r\n";
+	$msgEmail .= "Absender und löschen Sie diese Mail. Das unerlaubte Kopieren sowie \r\n";
+	$msgEmail .= "die unbefugte Weitergabe dieser Mail und der darin enthaltenen \r\n";
+	$msgEmail .= "Informationen ist nicht gestattet.\r\n\r\n";
+
+	$msgEmail .= "This e-mail may contain confidential and/or privileged information. \r\n"; 
+	$msgEmail .= "If you are not the intended recipient (or have received this e-mail in \r\n"; 
+	$msgEmail .= "error) please notify the sender immediately and delete this e-mail. Any \r\n";
+	$msgEmail .= "unauthorized copying, disclosure or distribution of the material in this \r\n";
+	$msgEmail .= " e-mail is strictly forbidden.\r\n\r\n";
+
+	$msgEmail .= "------------------------------------------------------------------------\r\n\r\n";
+
+
 
 	if (DEBUG == 1) 
 		doMsg($msgEmail);
