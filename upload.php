@@ -21,7 +21,9 @@ moveFile($zipfile, 'download/'.$zipfile);
 deleteFilesFromDirectory($upload_folder);
 
 // EMail erstellen
-generateEmail($downloadlink,$downloadlinkhtml,$from);
+//$err_msg = ($downloadlink,$downloadlinkhtml,$from,$header,$envelope_sender_address);
+generateEmail($downloadlink,$downloadlinkhtml,$from,$header,$envelope_sender_address);
+
 
 ### TESTFunktionen ###
 // CheckDebug
@@ -29,7 +31,7 @@ generateEmail($downloadlink,$downloadlinkhtml,$from);
 
 // CheckAnswer
  //generateTestMsg($downloadlink,$downloadlinkhtml);
-//doMsg("as");
+//doMsg($err_msg);
 //echo json_encode($response);
 
 // Formularfelder checken 
@@ -205,7 +207,8 @@ function saveFile($from, $to){
 		
         $msg = "<p>Ein Fehler ist aufgetreten, die Daei(en)konnten nicht gespeichert werden. Bitte versuchen Sie es noch einmal.</p>"; 
         $msg .= "Sollte das Problem wiederholt bestehen, so schreiben Sie uns bitte eine kurze Nachricht.<br>\n";
-		doMsg($msg);
+        $msg .= "From: ".$from." TO:".$to;
+   		doMsg($msg);
       }
    }
 }  
@@ -231,7 +234,7 @@ function moveFile($from, $to){
 
 
 //EMail zusammenbauen
-function generateEmail($downloadlink,$downloadlinkhtml,$from) {
+function generateEmail($downloadlink,$downloadlinkhtml,$from,$header,$envelope_sender_address) {
 	global $team;
 	global $error;
 	global $filenames;
@@ -334,24 +337,27 @@ function generateEmail($downloadlink,$downloadlinkhtml,$from) {
 		doMsg($msgEmail);
 
 	//if (DEBUG == 1) 
-				//doMsg('Hello ' . htmlspecialchars($_POST["kontakt"]) . '!');
+		//doMsg('Hello ' . htmlspecialchars($_POST["kontakt"]) . '!');
 
 
 	$subject = "Daten BZN";	
 	
-	// EMail senden
-	sendMail($email_address,$subject,$msgEmail,$from);
-	
+	// EMail an den Ansprechpartner senden
+	sendMail($email_address,$subject,$msgEmail,$header,$envelope_sender_address);
+
+	// BestätigungsEMail senden
+	sendMail($useremail,$subject,$msgEmail,$header,$envelope_sender_address);
+
 	
 	// Antwort auf der Website ausgeben
-	
+	//$msg = $useremail." --- <br> --- ".$email_address." --- <br> --- ".$from." --- <br> --- ".$subject." --- <br> --- ".$message." --- <br> --- ".$header." --- <br> --- ".$envelope_sender_address;
 	doMsg($msg);
 
 
 }	
 
 // EMail versenden
-function sendMail($to,$subject,$message,$from) {
+function sendMail($to,$subject,$message,$header, $envelope_sender_address) {
 	global $error;
 	if (!isset($to))
 		$to = "testme@breitband-nds.de"; //Mailadresse Empfaenger
@@ -366,20 +372,10 @@ function sendMail($to,$subject,$message,$from) {
 	if (!isset($from))
 		$from   = "testme@breitband-nds.de";
 
-	$headers   = array();
-	$headers[] = "MIME-Version: 1.0";
-	$headers[] = "Content-type: text/plain; charset=iso-8859-1";
-	$headers[] = "From: {$from}";
-	// falls Bcc benötigt wird
-	$headers[] = "Bcc: Resale <mittler@breitband-niedersachsen.de>";
-	$headers[] = "Reply-To: {$from}";
-	$headers[] = "Subject: {$subject}";
-	$headers[] = "X-Mailer: PHP/".phpversion();
-
-	if (DEBUG == 1)
-		echo "E-Mail mit Umlauten wurde gesendet!";   
+	//if (DEBUG == 1)
+		//echo "E-Mail mit Umlauten wurde gesendet!";   
 	
-	if (@mail($to, $subject, $message,implode("\r\n",$headers))) { 
+	if (@mail($to,$subject,$message,$header, $envelope_sender_address)) { 
 		// $message =  "<pre>".$message.$filenames."</pre>";
 		// doMsg($message);
 	} else {
@@ -389,15 +385,16 @@ function sendMail($to,$subject,$message,$from) {
 	}
 }
 
+
 function checkDebug($downloadlink,$downloadlinkhtml) {
 	
 	if (DEBUG == 1) {
 		$msg = "<h3>DEBUGMODUS</h3>";
 		generateTestMsg($downloadlink,$downloadlinkhtml);
 	} else {	
-	 doMsg();
-	//exit;
-}
+		doMsg();
+		//exit;
+	}
 }	
  
 
